@@ -17,3 +17,9 @@ declare module '*.css' {
   const content: { [className: string]: string };
   export default content;
 }
+
+declare const process: {
+  env: {
+    NODE_ENV: "development" | "production" | "test";
+  };
+};

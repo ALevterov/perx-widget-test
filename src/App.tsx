@@ -8,11 +8,16 @@ import Catalog from './pages/Catalog/Catalog';
 import Cart from './pages/Cart/Cart';
 import styles from './App.module.scss';
 
+
+const basename = process.env.NODE_ENV === "production"
+  ? "/perx-widget-test"
+  : "/";
+
 const App: React.FC = () => {
   return (
     <ConfigProvider locale={ruRU}>
       <div className={styles.app}>
-        <BrowserRouter>
+        <BrowserRouter basename={basename}>
           <Header />
           <main className={styles.main}>
             <Routes>

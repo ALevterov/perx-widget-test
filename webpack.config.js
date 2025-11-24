@@ -11,6 +11,9 @@ module.exports = {
     filename: '[name].js',
     globalObject: 'this',
     clean: true,
+		publicPath: process.env.NODE_ENV === "production" 
+  ? "/perx-widget-test" 
+  : "/",
   },
   resolve: {
     extensions: ['.tsx', '.ts', '.js', '.jsx'],
@@ -59,7 +62,7 @@ module.exports = {
       template: './public/index.html',
       filename: 'index.html',
       chunks: ['main'],
-    }),
+    })
   ],
   devServer: {
     static: {
