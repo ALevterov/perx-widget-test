@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Моя страница</title>
+  
+  <!-- 1. Подключите CSS виджета -->
+  <link rel="stylesheet" href="dist/widget-catalog.css" />
+</head>
+<body>
+  <!-- 2. Создайте контейнер для виджета -->
+  <div id="widget-catalog"></div>
+
+  <!-- 3. Подключите React и ReactDOM из CDN (обязательно перед виджетом!) -->
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  
+  <!-- 4. Подключите JS виджета -->
+  <script async src="dist/widget-catalog.js" onload="initWidgetCatalog()"></script>
+  
+  <!-- 5. Инициализируйте виджет -->
+  <script type="text/javascript">
+    function initWidgetCatalog() {
+      const widget = new window.WidgetCatalog({
+        el: "#widget-catalog",  // Селектор контейнера
+        dealers: [],            // Пустой массив = все дилеры, или ['id1', 'id2'] для конкретных
+      });
+      
+      widget.run();
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Пример инициализации виджета</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 20px;
+      font-family: Arial, sans-serif;
+      background: #f5f5f5;
+    }
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+    .widget-container {
+      margin-top: 20px;
+      border: 2px solid #ddd;
+      border-radius: 8px;
+      overflow: hidden;
+      background: white;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Пример использования виджета каталога</h1>
+    
+    <div class="widget-container">
+      <div id="widget-catalog"></div>
+    </div>
+  </div>
+
+  <!-- React и ReactDOM из CDN (обязательно подключите перед виджетом) -->
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  
+  <!-- CSS виджета -->
+  <link rel="stylesheet" href="../dist/widget-catalog.css" />
+  
+  <!-- JS виджета -->
+  <script async src="../dist/widget-catalog.js" onload="initWidgetCatalog()"></script>
+  
+  <script>
+    // Функция инициализации виджета
+    function initWidgetCatalog() {
+      if (typeof window.WidgetCatalog === 'undefined') {
+        console.error('Виджет не загружен. Убедитесь, что widget-catalog.js подключен.');
+        return;
+      }
+
+      // Пример 1: Загрузка товаров всех дилеров
+      // const widget = new window.WidgetCatalog({
+      //   el: "#widget-catalog",
+      //   dealers: [], // Пустой массив = все дилеры
+      // });
+      // widget.run();
+
+      // Пример 2: Загрузка товаров конкретных дилеров
+      const widget = new window.WidgetCatalog({
+        el: "#widget-catalog",
+        dealers: ['0c4aab30', '86e64a33'] // ID дилеров из API
+      });
+      
+      widget.run();
+    }
+
+    // Если скрипт уже загружен (не async)
+    if (typeof window.WidgetCatalog !== 'undefined') {
+      initWidgetCatalog();
+    }
+  </script>
+</body>
+</html>
+
