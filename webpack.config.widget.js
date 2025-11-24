@@ -13,6 +13,9 @@ module.exports = {
     },
     globalObject: 'this',
     clean: false,
+		publicPath: process.env.NODE_ENV === "production" 
+  ? "/perx-widget-test/" 
+  : "/",
   },
   resolve: {
     extensions: ['.tsx', '.ts', '.js', '.jsx'],

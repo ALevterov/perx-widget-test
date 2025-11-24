@@ -12,7 +12,7 @@ module.exports = {
     globalObject: 'this',
     clean: true,
 		publicPath: process.env.NODE_ENV === "production" 
-  ? "/perx-widget-test" 
+  ? "/perx-widget-test/" 
   : "/",
   },
   resolve: {
