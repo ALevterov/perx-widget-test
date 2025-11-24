@@ -2,8 +2,8 @@ import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { Card, Button, InputNumber, Space } from 'antd';
 import { PlusOutlined, MinusOutlined, ShoppingCartOutlined } from '@ant-design/icons';
-import { Product } from '../../types';
-import cartStore from '../../stores/CartStore';
+import { Product } from '@/types';
+import cartStore from '@/stores/CartStore';
 import styles from './ProductCard.module.scss';
 
 interface ProductCardProps {

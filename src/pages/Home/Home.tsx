@@ -2,8 +2,8 @@ import React, { useEffect } from 'react';
 import { observer } from 'mobx-react-lite';
 import { Carousel, Spin, Empty } from 'antd';
 import { LeftOutlined, RightOutlined } from '@ant-design/icons';
-import productStore from '../../stores/ProductStore';
-import ProductCard from '../../components/ProductCard/ProductCard';
+import productStore from '@/stores/ProductStore';
+import ProductCard from '@/components/ProductCard/ProductCard';
 import styles from './Home.module.scss';
 
 // Кастомные стрелки для карусели

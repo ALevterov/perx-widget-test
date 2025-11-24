@@ -1,4 +1,4 @@
-import { FilterState } from '../types';
+import { FilterState } from '@/types';
 
 // Helper to get search params from hash or regular URL
 const getSearchParams = (): URLSearchParams => {

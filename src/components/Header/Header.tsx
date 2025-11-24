@@ -3,7 +3,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
 import { Badge, Button } from 'antd';
 import { ShoppingCartOutlined, HomeOutlined, AppstoreOutlined } from '@ant-design/icons';
-import cartStore from '../../stores/CartStore';
+import cartStore from '@/stores/CartStore';
 import styles from './Header.module.scss';
 
 const Header: React.FC = () => {

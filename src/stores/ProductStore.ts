@@ -1,6 +1,6 @@
 import { makeAutoObservable, reaction } from 'mobx';
 import { Product } from '@/types';
-import { fetchProducts, fetchDealers, getProductImageUrl, ApiProduct, apiProductsToReal } from '../utils/api';
+import { fetchProducts, fetchDealers, getProductImageUrl, ApiProduct, apiProductsToReal } from '@/utils/api';
 import FilterStore from './FilterStore';
 
 class ProductStore {

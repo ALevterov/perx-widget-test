@@ -1,6 +1,6 @@
 import { makeAutoObservable } from 'mobx';
-import { FilterState } from '../types';
-import { getFiltersFromURL, updateURLWithFilters } from '../utils/urlParams';
+import { FilterState } from '@/types';
+import { getFiltersFromURL, updateURLWithFilters } from '@/utils/urlParams';
 
 class FilterStore {
   dealerIds: string[] = [];

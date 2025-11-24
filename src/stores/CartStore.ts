@@ -1,6 +1,6 @@
 import { makeAutoObservable } from 'mobx';
-import { Product, CartItem } from '../types';
-import { saveCartToStorage, loadCartFromStorage, clearCartStorage } from '../utils/localStorage';
+import { Product, CartItem } from '@/types';
+import { saveCartToStorage, loadCartFromStorage, clearCartStorage } from '@/utils/localStorage';
 
 class CartStore {
   items: CartItem[] = [];

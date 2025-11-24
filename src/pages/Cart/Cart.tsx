@@ -2,8 +2,8 @@ import React, { useEffect } from 'react';
 import { observer } from 'mobx-react-lite';
 import { List, Button, Empty, Card, Space, InputNumber, Popconfirm } from 'antd';
 import { DeleteOutlined, MinusOutlined, PlusOutlined, ShoppingCartOutlined } from '@ant-design/icons';
-import cartStore from '../../stores/CartStore';
-import productStore from '../../stores/ProductStore';
+import cartStore from '@/stores/CartStore';
+import productStore from '@/stores/ProductStore';
 import styles from './Cart.module.scss';
 
 const Cart: React.FC = () => {
