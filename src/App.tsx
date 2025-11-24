@@ -12,7 +12,7 @@ const App: React.FC = () => {
   return (
     <ConfigProvider locale={ruRU}>
       <div className={styles.app}>
-        <BrowserRouter basename="/perx-widget-test">
+        <BrowserRouter>
           <Header />
           <main className={styles.main}>
             <Routes>

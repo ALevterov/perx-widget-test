@@ -1,13 +1,13 @@
 const API_BASE_URL = 'https://test-frontend.dev.int.perx.ru';
 
+import { Product } from '@/types';
+
 export interface ApiProduct {
   id: string;
   name: string;
   price: number;
   image?: string;
   logo?: string;
-  dealer: string;
-  dealer_name?: string;
 }
 
 export type ApiDealer = string
@@ -57,3 +57,11 @@ export const getProductImageUrl = (logoPath?: string): string => {
   return `${API_BASE_URL}/logo/${logoPath}`;
 };
 
+export const apiProductsToReal = (apiProducts: ApiProduct[]): Product[] => apiProducts.map((apiProduct) => ({
+	id: apiProduct.id,
+	title: apiProduct.name,
+	price: apiProduct.price,
+	image: getProductImageUrl(apiProduct.logo || apiProduct.image),
+	dealerId: undefined,
+	dealerName: `Дилер unknown`,
+}));

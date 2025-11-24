@@ -1,9 +1,11 @@
-import { makeAutoObservable } from 'mobx';
-import { Product } from '../types';
-import { fetchProducts, fetchDealers, getProductImageUrl, ApiProduct } from '../utils/api';
+import { makeAutoObservable, reaction } from 'mobx';
+import { Product } from '@/types';
+import { fetchProducts, fetchDealers, getProductImageUrl, ApiProduct, apiProductsToReal } from '../utils/api';
+import FilterStore from './FilterStore';
 
 class ProductStore {
   products: Product[] = [];
+	filteredProducts: Product[] = [];
   dealerIds: string[] = []; // Массив ID дилеров из API
   loading = false;
   error: string | null = null;
@@ -12,6 +14,19 @@ class ProductStore {
 
   constructor() {
     makeAutoObservable(this);
+
+		reaction(
+      () => ({
+        dealerIds: FilterStore.dealerIds.slice(),
+        productsLoaded: this.products.length 
+      }),
+      () => {
+        this.loadFilteredProducts();
+      }
+			,
+      { fireImmediately: true }
+    );
+		this.loadDealers();
   }
 
   setDealerIds(dealerIds?: string[]) {
@@ -28,6 +43,8 @@ class ProductStore {
   }
 
   async loadProducts(dealerIdsForApi?: string[]) {
+		console.log('loadProducts');
+		
     this.loading = true;
     this.error = null;
 
@@ -36,24 +53,12 @@ class ProductStore {
       if (this.dealerIds.length === 0) {
         await this.loadDealers();
       }
-
-      // Load products - используем переданные dealerIds или selectedDealerIds из виджета
-      // Если ничего не передано, загружаем все товары
-      const dealerIdsToFetch = dealerIdsForApi || this.selectedDealerIds;
-      this.loadedForSpecificDealers = !!dealerIdsToFetch && dealerIdsToFetch.length > 0;
       
-      const apiProducts = await fetchProducts(dealerIdsToFetch);
+      const apiProducts = await fetchProducts();
       
       // Transform API products to our Product format
       // Имена дилеров извлекаем из поля dealer_name в товарах
-      this.products = apiProducts.map((apiProduct: ApiProduct) => ({
-        id: apiProduct.id,
-        title: apiProduct.name,
-        price: apiProduct.price,
-        image: getProductImageUrl(apiProduct.logo || apiProduct.image),
-        dealerId: apiProduct.dealer,
-        dealerName: apiProduct.dealer_name || `Дилер ${apiProduct.dealer}`,
-      }));
+      this.products = apiProductsToReal(apiProducts);
     } catch (error) {
       this.error = error instanceof Error ? error.message : 'Ошибка загрузки товаров';
       console.error('Error loading products:', error);
@@ -87,23 +92,37 @@ class ProductStore {
     return [];
   }
 
-  getFilteredProducts(dealerIds: string[], priceSort: 'none' | 'asc' | 'desc'): Product[] {
-    let filtered = [...this.products];
+  async loadFilteredProducts() {
+		console.log('loadFilteredProducts');
+		
+		if (!FilterStore.dealerIds.length) {
+			return this.filteredProducts = [...this.products]
+		}
 
-    // Filter by dealers
-    if (dealerIds.length > 0) {
-      filtered = filtered.filter((p) => dealerIds.includes(p.dealerId));
-    }
+		this.loading = true;
+    this.error = null;
 
-    // Sort by price
-    if (priceSort === 'asc') {
-      filtered.sort((a, b) => a.price - b.price);
-    } else if (priceSort === 'desc') {
-      filtered.sort((a, b) => b.price - a.price);
-    }
-
-    return filtered;
+		try {
+			let filtered = await fetchProducts(FilterStore.dealerIds);
+			this.filteredProducts = apiProductsToReal(filtered)
+		} catch(error) {
+			this.error = error instanceof Error ? error.message : 'Ошибка загрузки товаров';
+      console.error('Error loading products:', error);
+		} finally {
+			this.loading = false;
+		}
   }
+
+	getSortedProducts(priceSort: 'none' | 'asc' | 'desc') {
+	// Sort by price
+	const products = [...this.filteredProducts]
+    if (priceSort === 'asc') {
+      products.sort((a, b) => a.price - b.price);
+    } else if (priceSort === 'desc') {
+      products.sort((a, b) => b.price - a.price);
+    }
+		return products
+	}
 
   getHomeProducts(): Product[] {
     // Get products with price >= 10

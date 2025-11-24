@@ -3,7 +3,7 @@ export interface Product {
   title: string;
   price: number;
   image: string;
-  dealerId: string;
+  dealerId: string | undefined;
   dealerName: string;
 }
 

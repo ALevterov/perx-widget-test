@@ -2,10 +2,10 @@ import React, { useEffect } from 'react';
 import { observer } from 'mobx-react-lite';
 import { Row, Col, Tag, Button, Spin, Empty, Space } from 'antd';
 import { ArrowUpOutlined, ArrowDownOutlined } from '@ant-design/icons';
-import productStore from '../../stores/ProductStore';
-import filterStore from '../../stores/FilterStore';
-import cartStore from '../../stores/CartStore';
-import ProductCard from '../../components/ProductCard/ProductCard';
+import productStore from '@/stores/ProductStore';
+import filterStore from '@/stores/FilterStore';
+import cartStore from '@/stores/CartStore';
+import ProductCard from '@/components/ProductCard/ProductCard';
 import styles from './Catalog.module.scss';
 
 const Catalog: React.FC = () => {
@@ -17,7 +17,7 @@ const Catalog: React.FC = () => {
 
     // В каталоге загружаем все товары (без фильтра), чтобы фильтр работал правильно
     // Перезагружаем, если товары еще не загружены или загружены только для конкретных дилеров
-    if (!productStore.loading && (productStore.products.length === 0 || productStore.loadedForSpecificDealers)) {
+    if (!productStore.loading && productStore.products.length === 0) {
       // Загружаем все товары (undefined = без фильтра по дилерам), фильтрация будет на клиенте
       productStore.loadProducts(undefined).then(() => {
         if (productStore.products.length > 0) {
@@ -29,13 +29,12 @@ const Catalog: React.FC = () => {
     } else if (productStore.products.length > 0) {
       cartStore.setProducts(productStore.products);
     }
+
   }, []);
 
   // Observer will automatically track changes to these reactive values
   const dealers = productStore.getDealers() || [];
-  const filteredProducts = productStore.products.length > 0 
-    ? productStore.getFilteredProducts(filterStore.dealerIds, filterStore.priceSort)
-    : [];
+  const filteredProducts = productStore.getSortedProducts(filterStore.priceSort);
 
   const handlePriceSort = () => {
     filterStore.togglePriceSort();
