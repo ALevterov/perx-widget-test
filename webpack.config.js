@@ -1,6 +1,8 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
+const isProd = process.argv.includes('--mode=production');
+
 module.exports = {
   entry: {
     main: './src/index.tsx',
@@ -11,7 +13,7 @@ module.exports = {
     filename: '[name].js',
     globalObject: 'this',
     clean: true,
-		publicPath: process.env.NODE_ENV === "production" 
+		publicPath: isProd 
   ? "/perx-widget-test/" 
   : "/",
   },

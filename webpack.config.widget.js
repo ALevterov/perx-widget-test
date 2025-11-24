@@ -1,6 +1,8 @@
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
+const isProd = process.argv.includes('--mode=production');
+
 module.exports = {
   entry: './src/widget.tsx',
   output: {
@@ -13,7 +15,7 @@ module.exports = {
     },
     globalObject: 'this',
     clean: false,
-		publicPath: process.env.NODE_ENV === "production" 
+		publicPath: isProd 
   ? "/perx-widget-test/" 
   : "/",
   },
