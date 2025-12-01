@@ -5,16 +5,26 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Perx Catalog Widget</title>
   <script>
-    // GitHub Pages fallback - redirect to index.html
-    var pathSegmentsToKeep = 0;
-    var l = window.location;
-    l.replace(
-      l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') +
-      l.pathname.split('/').slice(0, 1 + pathSegmentsToKeep).join('/') + '/?/' +
-      l.pathname.slice(1).split('/').slice(pathSegmentsToKeep).join('/').replace(/&/g, '~and~') +
-      (l.search ? '&' + l.search.slice(1).replace(/&/g, '~and~') : '') +
-      l.hash
-    );
+    // GitHub Pages fallback - save path and redirect to index.html
+    (function() {
+      var basePath = '/perx-widget-test';
+      var currentPath = window.location.pathname;
+      
+      // Extract path relative to base
+      var path = currentPath;
+      if (path.startsWith(basePath)) {
+        path = path.slice(basePath.length);
+      }
+      
+      // Save the path to sessionStorage if it's not index.html
+      if (path && path !== '/' && path !== '/index.html') {
+        sessionStorage.setItem('redirectPath', path + window.location.search + window.location.hash);
+      }
+      
+      // Redirect to index.html
+      var redirectUrl = basePath + '/index.html';
+      window.location.replace(redirectUrl);
+    })();
   </script>
   <style>
     body {
@@ -34,4 +44,3 @@
   <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
 </body>
 </html>
-

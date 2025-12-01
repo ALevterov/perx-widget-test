@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { observer } from 'mobx-react-lite';
-import { List, Button, Empty, Card, Space, InputNumber, Popconfirm } from 'antd';
+import { List, Button, Empty, Card, Space, InputNumber, Popconfirm, Spin } from 'antd';
 import { DeleteOutlined, MinusOutlined, PlusOutlined, ShoppingCartOutlined } from '@ant-design/icons';
 import { cartStore } from '@/entities/cart/model';
 import { productStore } from '@/entities/product/model';
@@ -8,13 +8,21 @@ import styles from './cart-page.module.scss';
 
 export const CartPage = observer(() => {
   useEffect(() => {
-    if (productStore.products.length === 0) {
-      productStore.loadProducts().then(() => {
-        cartStore.setProducts(productStore.products);
-      });
-    } else {
-      cartStore.setProducts(productStore.products);
-    }
+    const loadData = async () => {
+      try {
+        // Всегда загружаем товары перед синхронизацией корзины
+        if (productStore.products.length === 0) {
+          await productStore.loadProducts();
+        }
+        // Синхронизируем корзину с загруженными товарами
+        if (productStore.products.length > 0) {
+          cartStore.setProducts(productStore.products);
+        }
+      } catch (error) {
+        console.error('Error loading cart data:', error);
+      }
+    };
+    loadData();
   }, []);
 
   const handleQuantityChange = (productId: string, value: number | null) => {
@@ -31,7 +39,21 @@ export const CartPage = observer(() => {
     cartStore.clearCart();
   };
 
-  if (cartStore.items.length === 0) {
+  // Filter out items with invalid products
+  const validItems = cartStore.items.filter((item) => item.product && item.product.id);
+
+  if (productStore.loading) {
+    return (
+      <div className={styles.cart}>
+        <h1 className={styles.title}>Корзина</h1>
+        <div className={styles.empty}>
+          <Spin size="large" />
+        </div>
+      </div>
+    );
+  }
+
+  if (validItems.length === 0) {
     return (
       <div className={styles.cart}>
         <h1 className={styles.title}>Корзина</h1>
@@ -65,7 +87,7 @@ export const CartPage = observer(() => {
       <div className={styles.content}>
         <div className={styles.list}>
           <List
-            dataSource={cartStore.items}
+            dataSource={validItems}
             renderItem={(item) => (
               <List.Item>
                 <Card className={styles.itemCard}>
@@ -123,12 +145,14 @@ export const CartPage = observer(() => {
           <div className={styles.summaryContent}>
             <div className={styles.summaryRow}>
               <span>Товаров в корзине:</span>
-              <span className={styles.summaryValue}>{cartStore.totalItems}</span>
+              <span className={styles.summaryValue}>
+                {validItems.reduce((sum, item) => sum + item.quantity, 0)}
+              </span>
             </div>
             <div className={styles.summaryRow}>
               <span>Итоговая стоимость:</span>
               <span className={styles.summaryTotal}>
-                {cartStore.totalPrice.toLocaleString('ru-RU')} ₽
+                {validItems.reduce((sum, item) => sum + item.product.price * item.quantity, 0).toLocaleString('ru-RU')} ₽
               </span>
             </div>
             <Button type="primary" size="large" block className={styles.checkoutButton}>
