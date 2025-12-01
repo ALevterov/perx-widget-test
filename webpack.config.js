@@ -1,5 +1,6 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 const isProd = process.argv.includes('--mode=production');
 
@@ -64,7 +65,13 @@ module.exports = {
       template: './public/index.html',
       filename: 'index.html',
       chunks: ['main'],
-    })
+    }),
+    new CopyWebpackPlugin({
+      patterns: [
+        { from: 'public/404.html', to: '404.html' },
+        { from: 'public/_redirects', to: '_redirects' },
+      ],
+    }),
   ],
   devServer: {
     static: {
@@ -73,7 +80,10 @@ module.exports = {
     port: 3000,
     hot: true,
     open: true,
-    historyApiFallback: true,
+    historyApiFallback: {
+      index: '/index.html',
+      disableDotRule: true,
+    },
   },
   externals: {
     react: 'React',

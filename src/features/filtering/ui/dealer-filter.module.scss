@@ -1,0 +1,17 @@
+.loadingText {
+  color: #8c8c8c;
+  font-size: 14px;
+}
+
+.dealerTag {
+  cursor: pointer;
+  padding: 4px 12px;
+  font-size: 14px;
+  transition: all 0.2s ease;
+  
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  }
+}
+

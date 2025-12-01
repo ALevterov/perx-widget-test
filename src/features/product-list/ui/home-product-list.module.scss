@@ -1,0 +1,321 @@
+.home {
+  padding: 40px 32px;
+  max-width: 1280px;
+  margin: 0 auto;
+  min-height: calc(100vh - 80px);
+  width: 100%;
+  box-sizing: border-box;
+
+  @media (max-width: 1400px) {
+    max-width: 100%;
+    padding: 40px 48px;
+  }
+
+  @media (max-width: 992px) {
+    padding: 32px 40px;
+  }
+
+  @media (max-width: 768px) {
+    padding: 24px 24px;
+  }
+
+  @media (max-width: 576px) {
+    padding: 20px 16px;
+  }
+
+  @media (max-width: 480px) {
+    padding: 16px 12px;
+  }
+}
+
+.title {
+  font-size: 32px;
+  font-weight: 700;
+  margin-bottom: 40px;
+  color: #1a1a1a;
+  text-align: center;
+  letter-spacing: -0.5px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.carousel {
+  margin-bottom: 32px;
+  padding: 20px 0;
+  overflow: hidden;
+  position: relative;
+
+  :global(.ant-carousel) {
+    overflow: hidden;
+    position: relative;
+
+    :global(.slick-list) {
+      overflow: hidden;
+      margin: 0 -16px;
+      padding: 0 16px;
+      position: relative;
+      display: block;
+    }
+
+    :global(.slick-track) {
+      display: flex;
+      align-items: stretch;
+      will-change: transform;
+      transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      left: 0;
+      top: 0;
+      gap: 0;
+    }
+
+    :global(.slick-slide) {
+      height: auto;
+      outline: none;
+      user-select: none;
+      padding: 0 16px;
+      box-sizing: border-box;
+      
+      > div {
+        height: 100%;
+        width: 100%;
+      }
+
+      &:active {
+        cursor: grabbing;
+      }
+    }
+
+    :global(.slick-list.dragging) {
+      cursor: grabbing;
+
+      :global(.slick-track) {
+        transition: none;
+      }
+    }
+
+    :global(.slick-arrow) {
+      &:before {
+        display: none;
+      }
+    }
+
+    :global(.slick-dots) {
+      bottom: -40px;
+
+      li {
+        button {
+          width: 12px;
+          height: 12px;
+          border-radius: 50%;
+          background: #595959;
+          transition: all 0.3s ease;
+
+          &:hover {
+            background: #1a1a1a;
+          }
+        }
+
+        &.slick-active button {
+          background: #1a1a1a;
+          width: 24px;
+          border-radius: 6px;
+        }
+      }
+    }
+
+    // Стили для контейнеров стрелок slick-carousel
+    :global(.slick-prev),
+    :global(.slick-next) {
+      width: 48px;
+      height: 48px;
+      z-index: 10;
+      top: 50%;
+      transform: translateY(-50%);
+      position: absolute;
+      
+      &:before {
+        display: none;
+      }
+
+      button {
+        width: 100%;
+        height: 100%;
+        position: relative;
+        display: block;
+      }
+
+      // Адаптивные размеры для контейнеров стрелок
+      @media (max-width: 768px) {
+        width: 40px;
+        height: 40px;
+      }
+      @media (max-width: 576px) {
+        width: 36px;
+        height: 36px;
+      }
+    }
+
+    :global(.slick-prev) {
+      left: -64px; // Repositioned
+      @media (max-width: 992px) { left: -40px; }
+      @media (max-width: 768px) { left: -24px; }
+      @media (max-width: 576px) { left: -16px; }
+    }
+
+    :global(.slick-next) {
+      right: -64px; // Repositioned
+      @media (max-width: 992px) { right: -40px; }
+      @media (max-width: 768px) { right: -24px; }
+      @media (max-width: 576px) { right: -16px; }
+    }
+
+    // Отключенные стрелки
+    :global(.slick-arrow.slick-disabled) {
+      .carouselArrow {
+        opacity: 0.3;
+        cursor: not-allowed;
+      }
+    }
+  }
+
+  // Показываем стрелки ярче при наведении на контейнер карусели
+  &:hover {
+    :global(.ant-carousel) {
+      :global(.slick-arrow) {
+        .carouselArrow {
+          opacity: 1;
+        }
+      }
+    }
+  }
+}
+
+// Стили для кастомных кнопок стрелок
+.carouselArrow {
+  position: absolute;
+	z-index: 10;
+	top: calc(50% - 24px);
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border: 2px solid rgba(255, 255, 255, 0.9);
+  border-radius: 50%;
+  cursor: pointer;
+  color: #fff;
+  font-size: 20px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+  opacity: 0.7; // Default opacity
+  visibility: visible;
+  padding: 0;
+  margin: 0;
+
+  &:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+    background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.3);
+  }
+
+  &:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+
+    &:hover {
+      transform: scale(1);
+      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+    }
+  }
+
+  // Иконка внутри кнопки
+  :global(.anticon) {
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  // Адаптивные размеры для кнопок
+  @media (max-width: 992px) {
+    font-size: 16px;
+    :global(.anticon) { font-size: 16px; }
+  }
+  @media (max-width: 768px) {
+    font-size: 14px;
+    :global(.anticon) { font-size: 14px; }
+  }
+  @media (max-width: 576px) {
+    font-size: 12px;
+    :global(.anticon) { font-size: 12px; }
+  }
+}
+
+.carouselArrowLeft {
+  left: 0;
+}
+
+.carouselArrowRight {
+  right: 0;
+}
+
+.slide {
+  padding: 0 16px;
+}
+
+.loading,
+.empty {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 400px;
+  flex-direction: column;
+  gap: 16px;
+
+  :global(.ant-spin) {
+    :global(.ant-spin-dot) {
+      font-size: 32px;
+    }
+  }
+
+  :global(.ant-empty) {
+    :global(.ant-empty-description) {
+      color: #8c8c8c;
+      font-size: 16px;
+    }
+  }
+}
+
+@media (max-width: 992px) {
+  .title {
+    font-size: 28px;
+    margin-bottom: 32px;
+  }
+}
+
+@media (max-width: 768px) {
+  .title {
+    font-size: 24px;
+    margin-bottom: 28px;
+  }
+}
+
+@media (max-width: 576px) {
+  .title {
+    font-size: 22px;
+    margin-bottom: 24px;
+  }
+}
+

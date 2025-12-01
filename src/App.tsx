@@ -1,36 +1,26 @@
-import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { ConfigProvider } from 'antd';
-import ruRU from 'antd/locale/ru_RU';
-import Header from './components/Header/Header';
-import Home from './pages/Home/Home';
-import Catalog from './pages/Catalog/Catalog';
-import Cart from './pages/Cart/Cart';
+import { AppProvider } from './app/providers';
+import { Header } from '@/widgets/header';
+import { HomePage } from '@/pages/Home';
+import { CatalogPage } from '@/pages/Catalog';
+import { CartPage } from '@/pages/Cart';
 import styles from './App.module.scss';
 
-
-const basename = process.env.NODE_ENV === "production"
-  ? "/perx-widget-test"
-  : "/";
-
-const App: React.FC = () => {
+export const App = () => {
   return (
-    <ConfigProvider locale={ruRU}>
-      <div className={styles.app}>
-        <BrowserRouter basename={basename}>
+    <AppProvider>
+      <BrowserRouter>
+        <div className={styles.app}>
           <Header />
-          <main className={styles.main}>
+          <main>
             <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/catalog" element={<Catalog />} />
-              <Route path="/cart" element={<Cart />} />
+              <Route path="/" element={<HomePage />} />
+              <Route path="/catalog" element={<CatalogPage />} />
+              <Route path="/cart" element={<CartPage />} />
             </Routes>
           </main>
-        </BrowserRouter>
-      </div>
-    </ConfigProvider>
+        </div>
+      </BrowserRouter>
+    </AppProvider>
   );
 };
-
-export default App;
-
