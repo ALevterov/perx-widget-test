@@ -53,6 +53,12 @@ class ProductStore {
 
       const apiProducts = await fetchProducts(dealerIdsForApi);
       this.products = apiProductsToReal(apiProducts);
+      
+      // Если загружались товары для конкретных дилеров, отмечаем это
+      this.loadedForSpecificDealers = !!dealerIdsForApi && dealerIdsForApi.length > 0;
+      
+      // Сбрасываем filteredProducts, чтобы они обновились через reaction
+      this.filteredProducts = [];
     } catch (error) {
       this.error = error instanceof Error ? error.message : 'Ошибка загрузки товаров';
       console.error('Error loading products:', error);

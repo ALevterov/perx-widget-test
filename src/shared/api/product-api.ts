@@ -20,6 +20,9 @@ export const fetchProducts = async (dealerIds?: string[]): Promise<ApiProduct[]>
   if (dealerIds && dealerIds.length > 0) {
     const dealersParam = dealerIds.join(',');
     url += `?dealers=${dealersParam}`;
+    console.log('API: Fetching products for dealers:', dealerIds, 'URL:', url);
+  } else {
+    console.log('API: Fetching all products, URL:', url);
   }
 
   const response = await fetch(url);
@@ -29,6 +32,7 @@ export const fetchProducts = async (dealerIds?: string[]): Promise<ApiProduct[]>
   }
 
   const res = await response.json();
+  console.log('API: Received products:', res.length);
   return res;
 };
 

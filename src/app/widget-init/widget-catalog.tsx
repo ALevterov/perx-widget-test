@@ -59,10 +59,14 @@ export class WidgetCatalog {
 
   private async initializeData(dealers?: string[]): Promise<void> {
     if (dealers && dealers.length > 0) {
+      console.log('WidgetCatalog: Initializing with dealers:', dealers);
       productStore.setDealerIds(dealers);
       await productStore.loadProducts(dealers);
+      console.log('WidgetCatalog: Loaded products for dealers:', productStore.products.length);
     } else {
+      console.log('WidgetCatalog: Initializing without dealers - loading all products');
       await productStore.loadProducts();
+      console.log('WidgetCatalog: Loaded all products:', productStore.products.length);
     }
 
     if (productStore.products.length > 0) {

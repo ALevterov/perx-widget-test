@@ -13,16 +13,23 @@ export const CatalogProductList = observer(() => {
       productStore.loadDealers();
     }
 
-    if (!productStore.loading && productStore.products.length === 0) {
-      productStore.loadProducts(undefined).then(() => {
-        if (productStore.products.length > 0) {
-          cartStore.setProducts(productStore.products);
-        }
-      }).catch((error) => {
-        console.error('Error loading products:', error);
-      });
-    } else if (productStore.products.length > 0) {
-      cartStore.setProducts(productStore.products);
+    // В каталоге загружаем все товары для возможности фильтрации
+    // Но только если товары еще не загружены или были загружены только для конкретных дилеров
+    if (!productStore.loading) {
+      // Если товары не загружены или загружены только для конкретных дилеров,
+      // загружаем все товары для каталога
+      if (productStore.products.length === 0 || productStore.loadedForSpecificDealers) {
+        productStore.loadProducts(undefined).then(() => {
+          if (productStore.products.length > 0) {
+            cartStore.setProducts(productStore.products);
+          }
+        }).catch((error) => {
+          console.error('Error loading products:', error);
+        });
+      } else {
+        // Если товары уже загружены (все), просто синхронизируем корзину
+        cartStore.setProducts(productStore.products);
+      }
     }
   }, []);
 

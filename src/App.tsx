@@ -6,10 +6,14 @@ import { CatalogPage } from '@/pages/Catalog';
 import { CartPage } from '@/pages/Cart';
 import styles from './App.module.scss';
 
+const basename = process.env.NODE_ENV === "production"
+  ? "/perx-widget-test"
+  : "/";
+	
 export const App = () => {
   return (
     <AppProvider>
-      <BrowserRouter>
+      <BrowserRouter basename={basename}>
         <div className={styles.app}>
           <Header />
           <main>
